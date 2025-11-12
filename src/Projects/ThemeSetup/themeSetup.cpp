@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <unordered_set>
+#include <iostream>
 
 #define GREEN_TEXT(text) ("\033[32m" + std::string(text) + "\033[0m")
 namespace fs = std::filesystem;
