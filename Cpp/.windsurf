@@ -1,0 +1,2 @@
+exclude:
+  - "Cpp/src/Containers/Vector/Vector.h"
