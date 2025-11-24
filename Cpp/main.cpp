@@ -9,12 +9,17 @@ void fillVector(Vector& vector, int value) {
 
 int main() {
     Vector myVector = Vector(10);
-    fillVector(myVector, 55);
+    fillVector(myVector, 10);
+    myVector.print();
+    myVector.insert(0, 1);
+    myVector.print();
+    myVector.insert(0, 2);
+    myVector.print();
+    myVector.remove(2);
+    myVector.print();
+    myVector.remove(1);
     myVector.print();
 
-    myVector.pop_back();
-
-    myVector.print();
 
     return 0;
 }
