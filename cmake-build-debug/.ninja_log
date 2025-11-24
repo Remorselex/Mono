@@ -1,0 +1,7 @@
+# ninja log v6
+1	130	1752502774789487932	CMakeFiles/DtStrct.dir/src/Projects/Socket/Socket.cpp.o	ff44f1c7d1cd6e5f
+0	401	1752502604680729882	CMakeFiles/DtStrct.dir/src/Projects/Calculator/Calculator.cpp.o	155ec6cc197a15d1
+1	412	1752498443703137993	CMakeFiles/DtStrct.dir/src/Calculator/Calculator.cpp.o	ca7948cefda7397a
+412	448	1752498444114145410	DtStrct	11ee4bcacc828987
+0	17	1752502850307722152	build.ninja	2cdecf189f51bf69
+1	128	1752502774789487932	CMakeFiles/DtStrct.dir/main.cpp.o	bb2c7595ac92686f
