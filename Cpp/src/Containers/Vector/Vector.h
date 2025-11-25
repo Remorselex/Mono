@@ -7,6 +7,7 @@
 
 constexpr int INITIAL_CAPACITY{10};
 
+template<typename T>
 class Vector {
 public:
     ~Vector(); //done
@@ -17,11 +18,11 @@ public:
     void insert(int index, int value); //done
     void remove(int index); //done
     void clear(); //done
-    [[nodiscard]] int get_size() const; //done
-    [[nodiscard]] int get_capacity() const; //done
-    [[nodiscard]] int at(int index) const; //done
-    int front(); //done
-    int back(); //done
+    [[nodiscard]] size_t get_size() const; //done
+    [[nodiscard]] size_t get_capacity() const; //done
+    [[nodiscard]] int at(T index) const; //done
+    [[nodiscard]] T front() const; //done
+    [[nodiscard]] T back() const; //done
     void print() const;
 
     //TODO ------------->
@@ -31,68 +32,75 @@ public:
 
 
 private:
-    int* data;
-    int initial_capacity{10};
-    int capacity{0};
-    int size{0};
+    T* data{};
+    size_t capacity{0};
+    size_t size{0};
 
     void expand();
     //void rellocate();//my feature::hard level
 
 };
 
-inline int Vector::at(int index) const {
+template<typename T>
+int Vector<T>::at(T index) const {
     if (index > this->size || index < this->size)
         throw std::out_of_range("Vector::at() Index out of range");
 
     return this->data[index];
 }
 
-inline int Vector::get_size() const{
+template<typename T>
+size_t Vector<T>::get_size() const{
     return this->size;
 }
 
-
-inline Vector::Vector(int initial_capacity) {
+template<typename T>
+Vector<T>::Vector(int initial_capacity) {
     this->data = new int[initial_capacity];
     this->capacity = initial_capacity;
     this->size = 0;
 }
 
-inline Vector::~Vector() {
+template<typename T>
+Vector<T>::~Vector() {
     delete[] this->data;
 }
 
-inline void Vector::push_back(int value) {
+template<typename T>
+void Vector<T>::push_back(int value) {
     if(this->size == this->capacity)
         this->expand();
     this->data[this->size] = value;
-    this->size++;
+    ++this->size;
 }
 
-inline void Vector::print() const {
-    for(int i = 0; i < this->size; ++i)
+template<typename T>
+void Vector<T>::print() const {
+    for(size_t i = 0; i < this->size; ++i)
         std::cout << this->data[i] << " ";
     std::cout << "\n";
 }
 
-inline void Vector::expand() {
+template<typename T>
+void Vector<T>::expand() {
     this->capacity *=2;
     int* newData = new int[this->capacity];
-    for(int i = 0; i < this->size; ++i)
+    for(size_t i = 0; i < this->size; ++i)
         newData[i] = this->data[i];
     delete[] this->data;
     this->data = newData;
 }
 
 
-inline void Vector::pop_back() {
+template<typename T>
+void Vector<T>::pop_back() {
     if (this->size == 0)
         throw std::out_of_range("Vector::pop_back() Index out of range");
-   this->size--;
+   --this->size;
 }
 
-inline void Vector::clear() {
+template<typename T>
+void Vector<T>::clear() {
     this->data = new int[INITIAL_CAPACITY];
     this->capacity = INITIAL_CAPACITY;
     this->size = 0;
@@ -100,12 +108,13 @@ inline void Vector::clear() {
     this->data = nullptr;
 }
 
-inline int Vector::get_capacity() const {
+template<typename T>
+size_t Vector<T>::get_capacity() const {
     return this->capacity;
 }
 
-
-inline void Vector::insert(int index, int value) {
+template<typename T>
+void Vector<T>::insert(int index, int value) {
     if (index > this->size || index < 0) {
         throw std::out_of_range("Vector::insert() Index out of range");
     }
@@ -114,30 +123,33 @@ inline void Vector::insert(int index, int value) {
     if(this->size == this->capacity) {
         this->expand();
     }
-    this->size++;
+    ++this->size;
 
-   for(int i = this->size; i > index; --i)
+   for(size_t i = this->size; i > index; --i)
        this->data[i] = this->data[i - 1];
 
     this->data[index] = value;
 }
 
-inline void Vector::remove(int index) {
+template<typename T>
+void Vector<T>::remove(int index) {
     if (index > this->size || index < 0) {
         throw std::out_of_range("Vector::remove() Index out of range");
     }
-    for (int i = index; i < this->size; ++i)
+    for (size_t i = index; i < this->size; ++i)
         this->data[i] = this->data[i + 1];
-    this->size--;
+    --this->size;
 }
 
-inline int Vector::front() const {
+template<typename T>
+T Vector<T>::front() const {
     if (this->size == 0)
         throw std::out_of_range("Vector::front() vector is empty");
     return this->data[0];
 }
 
-inline int Vector::back() const {
+template<typename T>
+T Vector<T>::back() const {
     if (this->size == 0)
         throw std::out_of_range("Vector::back() vector is empty");
     return this->data[this->size - 1];
