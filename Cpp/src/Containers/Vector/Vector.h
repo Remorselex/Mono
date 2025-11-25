@@ -2,34 +2,58 @@
 // Created by user on 24.11.25.
 //
 
+
+
+//TODO IMPORTANT------------->
+// realize tests
+// realize smart copy
+// realize move semantics
+// make mutable
+//TODO IMPORTANT------------->
+
+//TODO METHODS ------------->
+// reserve()
+// shrink_to_fit()
+// emplace_back()
+// emplace()
+// swap()
+//TODO METHODS ------------->
+
 #ifndef VECTOR_H
 #define VECTOR_H
 
-constexpr int INITIAL_CAPACITY{10};
+constexpr size_t INITIAL_CAPACITY{10};
 
 template<typename T>
 class Vector {
 public:
-    ~Vector(); //done
-    explicit Vector(int initial_capacity = INITIAL_CAPACITY); //done
+    ~Vector(); 
+    explicit Vector(size_t initial_capacity = INITIAL_CAPACITY); 
 
-    void push_back(int value); //done
-    void pop_back(); //done
-    void insert(int index, int value); //done
-    void remove(int index); //done
-    void clear(); //done
-    [[nodiscard]] size_t get_size() const; //done
-    [[nodiscard]] size_t get_capacity() const; //done
-    [[nodiscard]] int at(T index) const; //done
-    [[nodiscard]] T front() const; //done
-    [[nodiscard]] T back() const; //done
+    const T& operator[](size_t index) const;
+    T& operator[](size_t index);
+
+    //range based arrays support
+    T* begin() { return this->data; }
+    T* end() { return this->data + this->size; }
+
+
+    const T* begin() const { return this->data; }
+    const T* end()   const { return this->data + this->size; }
+
+    void push_back(T value); 
+    void pop_back(); 
+    void insert(size_t index, T value); 
+    void remove(size_t index); 
+    void clear(); 
+    void reset(); 
+    bool empty();
+    [[nodiscard]] size_t get_size() const; 
+    [[nodiscard]] size_t get_capacity() const; 
+    [[nodiscard]] T at(size_t index) const; 
+    [[nodiscard]] T front() const; 
+    [[nodiscard]] T back() const; 
     void print() const;
-
-    //TODO ------------->
-    //realize smart copy
-    //realize [] operator
-    //realize tests
-
 
 private:
     T* data{};
@@ -37,13 +61,31 @@ private:
     size_t size{0};
 
     void expand();
-    //void rellocate();//my feature::hard level
+    //void relocate();//my feature::hard level
 
 };
 
 template<typename T>
-int Vector<T>::at(T index) const {
-    if (index > this->size || index < this->size)
+const T& Vector<T>::operator[](size_t index) const {
+    if (index > this->size) {
+        throw std::out_of_range("Vector::operator[]() Index out of range");
+    }
+
+    return this->data[index];
+}
+
+template<typename T>
+T& Vector<T>::operator[](size_t index) {
+    if (index >= this->size) {
+        throw std::out_of_range("Vector::operator[] Index out of range");
+    }
+    return this->data[index];
+}
+
+
+template<typename T>
+T Vector<T>::at(size_t index) const {
+    if (index >= this->size)
         throw std::out_of_range("Vector::at() Index out of range");
 
     return this->data[index];
@@ -55,8 +97,11 @@ size_t Vector<T>::get_size() const{
 }
 
 template<typename T>
-Vector<T>::Vector(int initial_capacity) {
-    this->data = new int[initial_capacity];
+Vector<T>::Vector(size_t initial_capacity) {
+    if (initial_capacity <= 0)
+        throw std::out_of_range("Vector::Vector() initial_capacity must be more then zero");
+
+    this->data = new T[initial_capacity];
     this->capacity = initial_capacity;
     this->size = 0;
 }
@@ -67,7 +112,7 @@ Vector<T>::~Vector() {
 }
 
 template<typename T>
-void Vector<T>::push_back(int value) {
+void Vector<T>::push_back(T value) {
     if(this->size == this->capacity)
         this->expand();
     this->data[this->size] = value;
@@ -84,7 +129,7 @@ void Vector<T>::print() const {
 template<typename T>
 void Vector<T>::expand() {
     this->capacity *=2;
-    int* newData = new int[this->capacity];
+    T* newData = new T[this->capacity];
     for(size_t i = 0; i < this->size; ++i)
         newData[i] = this->data[i];
     delete[] this->data;
@@ -101,12 +146,16 @@ void Vector<T>::pop_back() {
 
 template<typename T>
 void Vector<T>::clear() {
-    this->data = new int[INITIAL_CAPACITY];
-    this->capacity = INITIAL_CAPACITY;
     this->size = 0;
-    delete[] this->data;
-    this->data = nullptr;
 }
+template<typename T>
+void Vector<T>::reset() {
+    delete[] this->data;
+    this->data = new T[INITIAL_CAPACITY];
+    capacity = INITIAL_CAPACITY;
+    this->size = 0;
+}
+
 
 template<typename T>
 size_t Vector<T>::get_capacity() const {
@@ -114,15 +163,16 @@ size_t Vector<T>::get_capacity() const {
 }
 
 template<typename T>
-void Vector<T>::insert(int index, int value) {
-    if (index > this->size || index < 0) {
+void Vector<T>::insert(size_t index, T value) {
+    if (index > this->size ) {
         throw std::out_of_range("Vector::insert() Index out of range");
     }
 
 
-    if(this->size == this->capacity) {
+    if(this->size >= this->capacity) {
         this->expand();
     }
+
     ++this->size;
 
    for(size_t i = this->size; i > index; --i)
@@ -132,12 +182,18 @@ void Vector<T>::insert(int index, int value) {
 }
 
 template<typename T>
-void Vector<T>::remove(int index) {
-    if (index > this->size || index < 0) {
+void Vector<T>::remove(size_t index) {
+    if (index > this->size ) {
         throw std::out_of_range("Vector::remove() Index out of range");
     }
-    for (size_t i = index; i < this->size; ++i)
+    for (size_t i = index; i < this->size; ++i) {
+        if (i + 1 == this->size) {
+            break;
+        }
         this->data[i] = this->data[i + 1];
+    }
+
+
     --this->size;
 }
 
@@ -154,5 +210,10 @@ T Vector<T>::back() const {
         throw std::out_of_range("Vector::back() vector is empty");
     return this->data[this->size - 1];
 }
+
+template<typename T>
+bool Vector<T>::empty() {
+    return this->size == 0;
+};
 
 #endif //VECTOR_H
