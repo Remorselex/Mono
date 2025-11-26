@@ -9,9 +9,12 @@ void fillVector(Vector<int>& vector, int value) {
 
 
 int main() {
-    Vector myVector = Vector<int>(10);
+    Vector<int> myVector;
     fillVector(myVector, 10);
 
+    Vector<int> newVector = myVector;
+
+    newVector.print();
 
 
     return 0;

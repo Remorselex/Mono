@@ -2,8 +2,6 @@
 // Created by user on 24.11.25.
 //
 
-
-
 //TODO IMPORTANT------------->
 // realize tests
 // realize smart copy
@@ -27,11 +25,19 @@ constexpr size_t INITIAL_CAPACITY{10};
 template<typename T>
 class Vector {
 public:
-    ~Vector(); 
-    explicit Vector(size_t initial_capacity = INITIAL_CAPACITY); 
+    ~Vector();
+    explicit Vector(size_t initial_capacity = INITIAL_CAPACITY);
 
     const T& operator[](size_t index) const;
     T& operator[](size_t index);
+
+    //move semantics
+    Vector(Vector&& rValue) noexcept;
+    Vector& operator=(Vector&& rValue) noexcept;
+
+    //copy constructor
+    Vector(const Vector& other);
+    Vector& operator=(const Vector& other);
 
     //range based arrays support
     T* begin() { return this->data; }
@@ -41,18 +47,19 @@ public:
     const T* begin() const { return this->data; }
     const T* end()   const { return this->data + this->size; }
 
-    void push_back(T value); 
-    void pop_back(); 
-    void insert(size_t index, T value); 
-    void remove(size_t index); 
-    void clear(); 
-    void reset(); 
+    void push_back(T value);
+    void push_back(T&& value);
+    void pop_back();
+    void insert(size_t index, T value);
+    void remove(size_t index);
+    void clear();
+    void reset();
     bool empty();
-    [[nodiscard]] size_t get_size() const; 
-    [[nodiscard]] size_t get_capacity() const; 
-    [[nodiscard]] T at(size_t index) const; 
-    [[nodiscard]] T front() const; 
-    [[nodiscard]] T back() const; 
+    [[nodiscard]] size_t get_size() const;
+    [[nodiscard]] size_t get_capacity() const;
+    [[nodiscard]] T at(size_t index) const;
+    [[nodiscard]] T front() const;
+    [[nodiscard]] T back() const;
     void print() const;
 
 private:
@@ -61,9 +68,49 @@ private:
     size_t size{0};
 
     void expand();
-    //void relocate();//my feature::hard level
-
+    //void relocate();//my feature
 };
+
+template<typename T>
+Vector<T>::Vector(Vector&& rValue) noexcept
+        : data(rValue.data),
+          capacity(rValue.capacity),
+          size(rValue.size) {
+
+    rValue.data = nullptr;
+    rValue.capacity = 0;
+    rValue.size = 0;
+}
+
+template<typename T>
+Vector<T>& Vector<T>::operator=(Vector&& rValue) noexcept {
+    if(this != &rValue) {
+        delete [] this->data;
+        this->size = rValue.size;
+        this->capacity = rValue.capacity;
+        this->data = rValue.data;
+
+        rValue.data = nullptr;
+        rValue.size = 0;
+        rValue.capacity = 0;
+    }
+    return *this;
+}
+
+template<typename T>
+Vector<T>::Vector(size_t initial_capacity) {
+    if (initial_capacity <= 0)
+        throw std::out_of_range("Vector::Vector() initial_capacity must be more then zero");
+
+    this->data = new T[initial_capacity];
+    this->capacity = initial_capacity;
+    this->size = 0;
+}
+
+template<typename T>
+Vector<T>::~Vector() {
+    delete[] this->data;
+}
 
 template<typename T>
 const T& Vector<T>::operator[](size_t index) const {
@@ -97,26 +144,19 @@ size_t Vector<T>::get_size() const{
 }
 
 template<typename T>
-Vector<T>::Vector(size_t initial_capacity) {
-    if (initial_capacity <= 0)
-        throw std::out_of_range("Vector::Vector() initial_capacity must be more then zero");
-
-    this->data = new T[initial_capacity];
-    this->capacity = initial_capacity;
-    this->size = 0;
-}
-
-template<typename T>
-Vector<T>::~Vector() {
-    delete[] this->data;
-}
-
-template<typename T>
 void Vector<T>::push_back(T value) {
     if(this->size == this->capacity)
         this->expand();
     this->data[this->size] = value;
     ++this->size;
+}
+
+template<typename T>
+void Vector<T>::push_back(T&& value) {
+    if(size == capacity)
+        expand();
+    data[size] = std::move(value);
+    ++size;
 }
 
 template<typename T>
