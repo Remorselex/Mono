@@ -1,0 +1,14 @@
+packages:
+  # Frontend
+  - 'frontend/frameworks'     # React, Vue, Svelte, etc.
+  - 'frontend/playground'     # Vanilla JS/TS playground
+
+  # Backend
+  - 'backend'
+
+  # Native modules (C++ addons moved to ../Native/)
+  - '../Native/node-addons'
+
+  # TODO:
+  # - 'shared'              # shared code
+  # - 'frontend/graphql'    # GraphQL client

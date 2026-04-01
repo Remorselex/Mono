@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+**/node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+**/dist/
+**/build/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# C++ build artifacts (for node-hardcore addons)
+*.node
+*.o
+*.obj
+*.a
+*.lib
+build/Release/
+
+# WebAssembly
+*.wasm
+!**/assets/*.wasm

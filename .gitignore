@@ -1,6 +1,8 @@
 ../.idea
-Cpp/cmake-build-debug
 notes
+
+# C++ builds
+Cpp/cmake-build-debug
 build/
 Release/
 *.o
@@ -9,3 +11,10 @@ Release/
 *.dll
 *.lib
 *.a
+
+# Native modules
+Native/*/build/
+*.node
+
+# Node.js (handled by Javascript/.gitignore)
+# See Javascript/.gitignore for detailed rules

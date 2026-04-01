@@ -1,0 +1,32 @@
+{
+  "name": "@mono/javascript",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JavaScript/TypeScript workspace",
+  "scripts": {
+    "dev": "pnpm --parallel --stream run dev",
+    "dev:playground": "pnpm --filter @mono/scripts dev",
+    "dev:backend": "pnpm --filter @mono/backend dev",
+    "dev:addons": "pnpm --filter @mono/node-addons dev",
+    "build": "pnpm --recursive run build",
+    "build:addons": "pnpm --filter @mono/node-addons build",
+    "rebuild:addons": "pnpm --filter @mono/node-addons rebuild",
+    "clean": "pnpm --recursive run clean"
+  },
+  "keywords": [
+    "monorepo"
+  ],
+  "author": "Remorselex",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^9.9.0",
+    "typescript": "^5.5.4",
+    "prettier": "^3.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
