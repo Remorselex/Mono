@@ -1,5 +1,6 @@
 ../.idea
 notes
+SETUP_INSTRUCTIONS.md
 
 # C++ builds
 cmake-build-debug
