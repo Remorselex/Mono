@@ -1,6 +1,6 @@
 packages:
   # Frontend
-  - 'frontend/frameworks'     # React, Vue, Svelte, etc.
+  - 'frontend/frameworks/*'   # React, Vue, Svelte, etc.
   - 'frontend/playground'     # Vanilla JS/TS playground
 
   # Backend
@@ -12,3 +12,6 @@ packages:
   # TODO:
   # - 'shared'              # shared code
   # - 'frontend/graphql'    # GraphQL client
+
+allowBuilds:
+  esbuild: true

@@ -2,7 +2,10 @@
 notes
 
 # C++ builds
+cmake-build-debug
+cmake-build-release
 Cpp/cmake-build-debug
+Cpp/cmake-build-release
 build/
 Release/
 *.o
@@ -11,6 +14,10 @@ Release/
 *.dll
 *.lib
 *.a
+
+# Compiled executables (no extension)
+/main
+/Cpp/main
 
 # Native modules
 Native/*/build/
