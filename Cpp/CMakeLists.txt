@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 # Project setup
-project(DtStrct
+project(Mono
     VERSION 1.0
     DESCRIPTION "Data Structures and Algorithms"
     LANGUAGES CXX
