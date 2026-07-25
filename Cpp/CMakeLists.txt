@@ -81,4 +81,15 @@ if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
 else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+
+    target_compile_options(${PROJECT_NAME} PRIVATE
+            -fsanitize=undefined
+            -fno-omit-frame-pointer
+            -g
+    )
+
+    target_link_options(${PROJECT_NAME} PRIVATE
+            -fsanitize=undefined
+    )
+
 endif()
